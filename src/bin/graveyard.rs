@@ -18,10 +18,10 @@ fn main() {
     let mut world = Matrix::new(Area::new(), 128, 128);
     maze::generate(&mut rng, &mut world);
 
-    terminal::open("Graveyard", 80, 24);
+    terminal::open("Graveyard", 140, 40);
 
-    let mut log = log::BearLibTerminal::new(0, 40, 0, 10);
-    let mut prompt = prompt::BearLibTerminal::new(0, 40, 11);
+    let mut log = log::BearLibTerminal::new(0, 60, 0, 19);
+    let mut prompt = prompt::BearLibTerminal::new(0, 60, 20);
 
     let mut x = 0;
     let mut y = 0;
