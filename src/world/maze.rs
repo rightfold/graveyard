@@ -1,19 +1,11 @@
-use rand::Rng;
-
+use direction::Direction;
 use matrix::Matrix;
+
+use rand::Rng;
 
 /// A cell in a maze.
 pub trait Cell {
-    fn set_wall(&mut self, Wall);
-}
-
-/// A wall on a cell.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum Wall {
-    North,
-    South,
-    West,
-    East,
+    fn set_wall(&mut self, Direction);
 }
 
 /// Generate a maze.
@@ -25,12 +17,12 @@ pub fn generate<R, T>(rng: &mut R, matrix: &mut Matrix<T>)
     }
     recursive(rng, matrix, false, 0, width as isize, 0, height as isize);
     for x in 0 .. width {
-        matrix[(x,          0)].set_wall(Wall::North);
-        matrix[(x, height - 1)].set_wall(Wall::South);
+        matrix[(x,          0)].set_wall(Direction::North);
+        matrix[(x, height - 1)].set_wall(Direction::South);
     }
     for y in 0 .. height {
-        matrix[(        0, y)].set_wall(Wall::West);
-        matrix[(width - 1, y)].set_wall(Wall::East);
+        matrix[(        0, y)].set_wall(Direction::West);
+        matrix[(width - 1, y)].set_wall(Direction::East);
     }
 }
 
@@ -64,17 +56,17 @@ fn recursive_helper<R, T>(rng: &mut R, matrix: &mut Matrix<T>, vertical: bool,
         if wall_d != pass_d && !rng.gen_weighted_bool(6) {
             if vertical {
                 for cell in matrix.get_mut(wall_c as usize + 0, wall_d as usize) {
-                    cell.set_wall(Wall::East);
+                    cell.set_wall(Direction::East);
                 }
                 for cell in matrix.get_mut(wall_c as usize + 1, wall_d as usize) {
-                    cell.set_wall(Wall::West);
+                    cell.set_wall(Direction::West);
                 }
             } else {
                 for cell in matrix.get_mut(wall_d as usize + 0, wall_c as usize) {
-                    cell.set_wall(Wall::South);
+                    cell.set_wall(Direction::South);
                 }
                 for cell in matrix.get_mut(wall_d as usize + 1, wall_c as usize) {
-                    cell.set_wall(Wall::North);
+                    cell.set_wall(Direction::North);
                 }
             }
         }
@@ -98,22 +90,22 @@ mod tests {
             SimpleCell{walls: 0b0000}
         }
 
-        pub fn wall(&self, wall: Wall) -> bool {
+        pub fn wall(&self, wall: Direction) -> bool {
             self.walls & Self::wall_mask(wall) != 0
         }
 
-        fn wall_mask(wall: Wall) -> u8 {
+        fn wall_mask(wall: Direction) -> u8 {
             match wall {
-                Wall::North => 0b0001,
-                Wall::South => 0b0010,
-                Wall::West  => 0b0100,
-                Wall::East  => 0b1000,
+                Direction::North => 0b0001,
+                Direction::South => 0b0010,
+                Direction::West  => 0b0100,
+                Direction::East  => 0b1000,
             }
         }
     }
 
     impl Cell for SimpleCell {
-        fn set_wall(&mut self, wall: Wall) {
+        fn set_wall(&mut self, wall: Direction) {
             self.walls |= Self::wall_mask(wall);
         }
     }
@@ -131,12 +123,12 @@ mod tests {
         for y in 0 .. maze.height() {
             for x in 0 .. maze.width() {
                 let cell = maze[(x, y)];
-                if cell.wall(Wall::West) {
+                if cell.wall(Direction::West) {
                     println!("<line x1='{}' x2='{}' y1='{}' y2='{}' stroke='black' />",
                                 x * cell_size, x * cell_size,
                                 y * cell_size, (y + 1) * cell_size);
                 }
-                if cell.wall(Wall::North) {
+                if cell.wall(Direction::North) {
                     println!("<line x1='{}' x2='{}' y1='{}' y2='{}' stroke='black' />",
                                 x * cell_size, (x + 1) * cell_size,
                                 y * cell_size, y * cell_size);

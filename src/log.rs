@@ -13,8 +13,8 @@ pub trait Log {
 pub struct BearLibTerminal {
     x1: i32,
     x2: i32,
-    y1: i32,
-    y2: i32,
+    _y1: i32,
+    _y2: i32,
 
     x: i32,
     y: i32,
@@ -22,7 +22,7 @@ pub struct BearLibTerminal {
 
 impl BearLibTerminal {
     pub fn new(x1: i32, x2: i32, y1: i32, y2: i32) -> Self {
-        BearLibTerminal{x1, x2, y1, y2, x: x1, y: y1}
+        BearLibTerminal{x1, x2, _y1: y1, _y2: y2, x: x1, y: y1}
     }
 }
 
