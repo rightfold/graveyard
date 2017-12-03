@@ -4,13 +4,14 @@ extern crate graveyard;
 
 use bear_lib_terminal::terminal;
 
-use graveyard::color;
-use graveyard::direction::Direction;
-use graveyard::log::Log;
-use graveyard::log;
-use graveyard::prompt::Prompt;
-use graveyard::prompt;
-use graveyard::protocol::{Request, Response, receive_response, send_request};
+use graveyard::game::client::command::parse_command;
+use graveyard::game::client::dialogue::describe_area;
+use graveyard::infra::client::color;
+use graveyard::infra::client::log::Log;
+use graveyard::infra::client::log;
+use graveyard::infra::client::prompt::Prompt;
+use graveyard::infra::client::prompt;
+use graveyard::infra::common::protocol::{Request, Response, receive_response, send_request};
 
 use std::fmt::Debug;
 use std::io;
@@ -31,21 +32,14 @@ fn main() {
         log.write(&command);
         log.write("\n");
 
-        match match &command as &str {
-            "look"  => Some(Request::Look),
-            "north" => Some(Request::Move(Direction::North)),
-            "south" => Some(Request::Move(Direction::South)),
-            "west"  => Some(Request::Move(Direction::West )),
-            "east"  => Some(Request::Move(Direction::East )),
-            _ => None,
-        } {
+        match parse_command(&command) {
             None => {
                 log.color(color::BLACK, color::RED);
                 log.write("I do not understand that!\n");
             },
             Some(request) =>
                 match exchange(&mut server, &request).unwrap() {
-                    Response::Area(area) => area.describe(&mut log),
+                    Response::Area(area) => describe_area(&mut log, &area),
                 },
         }
     }

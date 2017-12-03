@@ -1,7 +1,7 @@
+use infra::client::color;
+
 use bear_lib_terminal::geometry::Point;
 use bear_lib_terminal::terminal;
-
-use color;
 
 pub trait Prompt {
     fn accept(&mut self) -> String;

@@ -1,5 +1,5 @@
-use direction::Direction;
-use world::Area;
+use game::common::area::Area;
+use infra::common::direction::Direction;
 
 use bincode;
 

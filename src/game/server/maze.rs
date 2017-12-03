@@ -1,5 +1,5 @@
-use direction::Direction;
-use matrix::Matrix;
+use infra::common::direction::Direction;
+use infra::common::matrix::Matrix;
 
 use rand::Rng;
 

@@ -1,11 +1,11 @@
 extern crate graveyard;
 extern crate rand;
 
-use graveyard::direction::Direction;
-use graveyard::matrix::Matrix;
-use graveyard::protocol::{Request, Response, receive_request, send_response};
-use graveyard::world::Area;
-use graveyard::world::maze;
+use graveyard::game::common::area::Area;
+use graveyard::game::server::maze;
+use graveyard::infra::common::direction::Direction;
+use graveyard::infra::common::matrix::Matrix;
+use graveyard::infra::common::protocol::{Request, Response, receive_request, send_response};
 
 use std::net::{TcpListener, TcpStream};
 use std::sync::{Arc, Mutex};

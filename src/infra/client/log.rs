@@ -1,9 +1,9 @@
-use std::thread::sleep;
-use std::time::Duration;
+use infra::client::color::Color;
 
 use bear_lib_terminal::terminal;
 
-use color::Color;
+use std::thread::sleep;
+use std::time::Duration;
 
 pub trait Log {
     fn color(&mut self, Color, Color);
