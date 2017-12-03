@@ -3,6 +3,7 @@ extern crate graveyard;
 extern crate rand;
 
 use graveyard::area::Area;
+use graveyard::color;
 use graveyard::log::Log;
 use graveyard::log;
 use graveyard::matrix::Matrix;
@@ -22,12 +23,24 @@ fn main() {
     let mut log = log::BearLibTerminal::new(0, 40, 0, 10);
     let mut prompt = prompt::BearLibTerminal::new(0, 40, 11);
 
-    world[(10, 10)].describe(&mut log);
-
+    let mut x = 0;
+    let mut y = 0;
     loop {
+        world[(x, y)].describe(&mut log);
+
         let command = prompt.accept();
         log.write("> ");
         log.write(&command);
         log.write("\n");
+        match &command as &str {
+            "north" => y -= 1,
+            "south" => y += 1,
+            "west"  => x -= 1,
+            "east"  => x += 1,
+            _ => {
+                log.color(color::BLACK, color::RED);
+                log.write("I do not understand that!\n");
+            },
+        }
     }
 }
